@@ -10,7 +10,7 @@ It will include three nodes:
 
 -- 'gc-out' : GlobalCache output node that can send GlobalCache, so it can be used with function blocks.
 
--- 'gc-in': GlobalCache listener node, who emits flow messages based on activity on the GlobalCache bus. Not working in v0.1.0.
+-- 'gc-in': GlobalCache listener node, who emits flow messages based on activity on the GlobalCache bus. Not working in v0.2.0.
 
 -- payload contains:
 
