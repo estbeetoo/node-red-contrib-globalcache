@@ -3,6 +3,8 @@ node-red-contrib-globalcache
 # Description
 Global Cache (iTach & iTach flex) nodes for node-red.
 
+iTach protocol documentation: http://www.globalcache.com/files/docs/API-iTach.pdf
+
 # What's inside?
 It will include three nodes:
 
@@ -25,3 +27,7 @@ According to official documentation: http://nodered.org/docs/getting-started/add
 # License
 
 ![Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png "CC BY-NC-SA 4.0")
+
+#TODO
+
+Implement autodiscovery by Beacon and arp tables
