@@ -8,11 +8,11 @@ iTach protocol documentation: http://www.globalcache.com/files/docs/API-iTach.pd
 # What's inside?
 It will include three nodes:
 
-'gc-controller' : a unique CONFIG node that holds connection configuration for GlobalCache and will acts as the encapsulator for GlobalCache access. As a node-red 'config' node, it cannot be added to a graph, but it acts as a singleton object that gets created in the the background when you add an 'gc' or 'gc-device' node and configure it accordingly.
+'globalcache-controller' : a unique CONFIG node that holds connection configuration for GlobalCache and will acts as the encapsulator for GlobalCache access. As a node-red 'config' node, it cannot be added to a graph, but it acts as a singleton object that gets created in the the background when you add an 'gc' or 'gc-device' node and configure it accordingly.
 
--- 'gc-out' : GlobalCache output node that can send GlobalCache, so it can be used with function blocks.
+-- 'globalcache-out' : GlobalCache output node that can send GlobalCache, so it can be used with function blocks.
 
--- 'gc-in': GlobalCache listener node, who emits flow messages based on activity on the GlobalCache bus. Not working in v0.2.0.
+-- 'globalcache-in': GlobalCache listener node, who emits flow messages based on activity on the GlobalCache bus. Not working in v0.2.0.
 
 -- payload contains:
 

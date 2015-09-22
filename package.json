@@ -30,6 +30,6 @@
   },
   "homepage": "https://github.com/estbeetoo/node-red-contrib-globalcache#readme",
   "dependencies": {
-    "globalcache": "^2.6.0"
+    "globalcache": "^2.7.0"
   }
 }

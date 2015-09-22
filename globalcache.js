@@ -8,7 +8,7 @@ var util = require('util'),
 module.exports = function (RED) {
 
     /**
-     * ====== GC-CONTROLLER ================
+     * ====== Globalcache-controller ================
      * Holds configuration for gcjs host+port,
      * initializes new gcjs connections
      * =======================================
@@ -21,7 +21,7 @@ module.exports = function (RED) {
         this.mode = config.mode;
         this.gcjsconn = null;
         var node = this;
-        node.log("new GCControllerNode, config: %j", config);
+        //node.log("new GCControllerNode, config: %j", config);
 
         /**
          * Initialize an gcjs socket, calling the handler function
@@ -52,10 +52,10 @@ module.exports = function (RED) {
         });
     }
 
-    RED.nodes.registerType("gc-controller", GCControllerNode);
+    RED.nodes.registerType("globalcache-controller", GCControllerNode);
 
     /**
-     * ====== GC-OUT =======================
+     * ====== Globalcache-out =======================
      * Sends outgoing Global Cache device from
      * messages received via node-red flows
      * =======================================
@@ -65,7 +65,7 @@ module.exports = function (RED) {
         this.name = config.name;
         this.ctrl = RED.nodes.getNode(config.controller);
         var node = this;
-        node.log('new GC-OUT, config: ' + util.inspect(config));
+        //node.log('new Globalcache-out, config: ' + util.inspect(config));
         //
         this.on("input", function (msg) {
             node.log('gcout.onInput msg[' + util.inspect(msg) + ']');
@@ -140,7 +140,7 @@ module.exports = function (RED) {
     }
 
     //
-    RED.nodes.registerType("gc-out", GCOut);
+    RED.nodes.registerType("globalcache-out", GCOut);
 
     //TODO: implement it!
     /**
@@ -154,7 +154,7 @@ module.exports = function (RED) {
         this.name = config.name;
         this.connection = null;
         var node = this;
-        node.log('new GCIn, config: %j', config);
+        //node.log('new GCIn, config: %j', config);
         var gcjsController = RED.nodes.getNode(config.controller);
         /* ===== Node-Red events ===== */
         this.on("input", function (msg) {
@@ -213,5 +213,5 @@ module.exports = function (RED) {
         });
     }
 
-    RED.nodes.registerType("gc-in", GCIn);
+    RED.nodes.registerType("globalcache-in", GCIn);
 }
