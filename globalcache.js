@@ -162,7 +162,6 @@ module.exports = function (RED) {
 
             }
         });
-        var node = this;
         this.on("close", function () {
             if (node.receiveEvent && node.connection)
                 node.connection.removeListener('event', node.receiveEvent);
