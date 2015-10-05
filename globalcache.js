@@ -64,6 +64,9 @@ module.exports = function (RED) {
         RED.nodes.createNode(this, config);
         this.name = config.name;
         this.ctrl = RED.nodes.getNode(config.controller);
+        this.unit_number = config.unit_number;
+        this.output = config.output;
+        this.gccommand = config.gccommand;
         var node = this;
         //node.log('new Globalcache-out, config: ' + util.inspect(config));
         //
@@ -84,10 +87,16 @@ module.exports = function (RED) {
                 node.log('gcout.onInput: illegal msg.payload!');
                 return;
             }
-            this.send(payload, function (err) {
+
+            if (typeof(payload) === 'string' && node.output != null && node.gccommand && node.gccommand !== 'empty')
+                payload = node.gccommand.toString() + ',' + ((parseInt(node.unit_number) === 0 || isNaN(parseInt(node.unit_number))) ? '1' : node.unit_number.toString()) + ':' + node.output + ',' + payload;
+
+            node.send(payload, function (err) {
                 if (err) {
                     node.error('send error: ' + err);
                 }
+                if (typeof(msg.cb) === 'function')
+                    msg.cb(err);
             });
 
         });
