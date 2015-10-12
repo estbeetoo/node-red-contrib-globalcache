@@ -3,6 +3,7 @@
  */
 
 var util = require('util'),
+    helper = require('./lib/helper'),
     iTach = require('globalcache').iTach;
 
 module.exports = function (RED) {
@@ -88,8 +89,14 @@ module.exports = function (RED) {
                 return;
             }
 
-            if (typeof(payload) === 'string' && node.output != null && node.gccommand && node.gccommand !== 'empty')
-                payload = node.gccommand.toString() + ',' + ((parseInt(node.unit_number) === 0 || isNaN(parseInt(node.unit_number))) ? '1' : node.unit_number.toString()) + ':' + node.output + ',' + payload;
+            if (node.output != null && node.gccommand && node.gccommand !== 'empty'){
+                if (msg.hasOwnProperty('format') && typeof(msg.format) === 'string' && (msg.format.toLowerCase() === 'ccf' || msg.format.toLowerCase() === 'hex') && typeof(payload) === 'string'){
+                    payload = helper.CCFtoGC(payload, node.gccommand.toString(), ((parseInt(node.unit_number) === 0 || isNaN(parseInt(node.unit_number))) ? '1' : node.unit_number.toString()), node.output, 1);
+                } 
+                else if (typeof(payload) === 'string')
+                    payload = node.gccommand.toString() + ',' + ((parseInt(node.unit_number) === 0 || isNaN(parseInt(node.unit_number))) ? '1' : node.unit_number.toString()) + ':' + node.output + ',' + payload;
+            }
+            
 
             node.send(payload, function (err) {
                 if (err) {
