@@ -72,7 +72,8 @@ module.exports = function (RED) {
         //node.log('new Globalcache-out, config: ' + util.inspect(config));
         //
         this.on("input", function (msg) {
-            node.log('gcout.onInput msg[' + util.inspect(msg) + ']');
+        	RED.comms.publish("debug",{name: node.name, msg: 'gcout.onInput msg[' + util.inspect(msg) + ']'});
+            //node.log('gcout.onInput msg[' + util.inspect(msg) + ']');
             if (!(msg && msg.hasOwnProperty('payload'))) return;
             var payload = msg.payload;
             if (typeof(msg.payload) === "object") {
@@ -126,7 +127,8 @@ module.exports = function (RED) {
         }
 
         this.send = function (data, callback) {
-            node.log('send data[' + data + ']');
+        	RED.comms.publish("debug",{name: node.name, msg: 'send data[' + data + ']'});
+            //node.log('send data[' + data + ']');
             // init a new one-off connection from the effectively singleton GCController
             // there seems to be no way to reuse the outgoing conn in adreek/node-gcjs
             this.ctrl.initializeGCConnection(function (connection) {
@@ -142,7 +144,7 @@ module.exports = function (RED) {
                 connection.on('disconnected', nodeStatusDisconnected);
 
                 try {
-                    node.log("send:  " + JSON.stringify(data));
+                	RED.comms.publish("debug",{name: node.name, msg: "send:  " + JSON.stringify(data)});
                     connection.send(data, function (err) {
                         callback && callback(err);
                     });
