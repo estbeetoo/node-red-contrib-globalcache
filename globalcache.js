@@ -30,7 +30,10 @@ module.exports = function (RED) {
          */
         this.initializeGCConnection = function (handler) {
             if (node.gcjsconn) {
-                node.log('already configured to GlobalCache device at ' + config.host + ':' + config.port + ' in mode[' + config.mode + ']');
+                RED.comms.publish("debug", {
+                    name: node.name,
+                    msg: 'already configured to GlobalCache device at ' + config.host + ':' + config.port + ' in mode[' + config.mode + ']'
+                });
                 if (handler && (typeof handler === 'function'))
                     handler(node.gcjsconn);
                 return node.gcjsconn;
@@ -39,7 +42,10 @@ module.exports = function (RED) {
             node.gcjsconn = null;
             if (config.mode === 'request-disconnect') {
                 node.gcjsconn = new iTach({host: config.host, port: config.port});
-                node.log('GC: successfully connected to ' + config.host + ':' + config.port + ' in mode[' + config.mode + ']');
+                RED.comms.publish("debug", {
+                    name: node.name,
+                    msg: 'GC: successfully connected to ' + config.host + ':' + config.port + ' in mode[' + config.mode + ']'
+                });
                 if (handler && (typeof handler === 'function'))
                     handler(node.gcjsconn);
             }
@@ -72,7 +78,7 @@ module.exports = function (RED) {
         //node.log('new Globalcache-out, config: ' + util.inspect(config));
         //
         this.on("input", function (msg) {
-        	RED.comms.publish("debug",{name: node.name, msg: 'gcout.onInput msg[' + util.inspect(msg) + ']'});
+            RED.comms.publish("debug", {name: node.name, msg: 'gcout.onInput msg[' + util.inspect(msg) + ']'});
             //node.log('gcout.onInput msg[' + util.inspect(msg) + ']');
             if (!(msg && msg.hasOwnProperty('payload'))) return;
             var payload = msg.payload;
@@ -90,14 +96,14 @@ module.exports = function (RED) {
                 return;
             }
 
-            if (node.output != null && node.gccommand && node.gccommand !== 'empty'){
-                if (msg.hasOwnProperty('format') && typeof(msg.format) === 'string' && (msg.format.toLowerCase() === 'ccf' || msg.format.toLowerCase() === 'hex') && typeof(payload) === 'string'){
+            if (node.output != null && node.gccommand && node.gccommand !== 'empty') {
+                if (msg.hasOwnProperty('format') && typeof(msg.format) === 'string' && (msg.format.toLowerCase() === 'ccf' || msg.format.toLowerCase() === 'hex') && typeof(payload) === 'string') {
                     payload = helper.CCFtoGC(payload, node.gccommand.toString(), ((parseInt(node.unit_number) === 0 || isNaN(parseInt(node.unit_number))) ? '1' : node.unit_number.toString()), node.output, 1);
-                } 
+                }
                 else if (typeof(payload) === 'string')
                     payload = node.gccommand.toString() + ',' + ((parseInt(node.unit_number) === 0 || isNaN(parseInt(node.unit_number))) ? '1' : node.unit_number.toString()) + ':' + node.output + ',' + payload;
             }
-            
+
 
             node.send(payload, function (err) {
                 if (err) {
@@ -127,7 +133,7 @@ module.exports = function (RED) {
         }
 
         this.send = function (data, callback) {
-        	RED.comms.publish("debug",{name: node.name, msg: 'send data[' + data + ']'});
+            RED.comms.publish("debug", {name: node.name, msg: 'send data[' + data + ']'});
             //node.log('send data[' + data + ']');
             // init a new one-off connection from the effectively singleton GCController
             // there seems to be no way to reuse the outgoing conn in adreek/node-gcjs
@@ -144,7 +150,7 @@ module.exports = function (RED) {
                 connection.on('disconnected', nodeStatusDisconnected);
 
                 try {
-                	RED.comms.publish("debug",{name: node.name, msg: "send:  " + JSON.stringify(data)});
+                    RED.comms.publish("debug", {name: node.name, msg: "send:  " + JSON.stringify(data)});
                     connection.send(data, function (err) {
                         callback && callback(err);
                     });
@@ -200,7 +206,7 @@ module.exports = function (RED) {
         }
 
         node.receiveData = function (data) {
-            node.log('gc event data[' + data.toString('hex') + ']');
+            RED.comms.publish("debug", {name: node.name, msg: 'gc event data[' + data.toString('hex') + ']'});
             node.send({
                 topic: 'gc',
                 payload: {
