@@ -21,7 +21,7 @@ It includes three nodes:
 
 3. ```globalcache-in```: GlobalCache listener node, who emits flow messages based on activity on the GlobalCache bus. Not working in v0.2.0.
 
-Message contains fields:
+Message for GlobalCache output node contains fields:
 
 - ```payload``` - (**REQUIRED**) must be JavaScript object or a string, an example:
 ```
@@ -40,14 +40,14 @@ If one specify three parameters: ```unit_number```, ```output``` and ```command`
 
 **Right now it not tested in all directions, working with IP2CC and WF2IR.**
  
-# Usage
+## Usage
 
 According to official documentation: http://nodered.org/docs/getting-started/adding-nodes.html
  
-# License
+## License
 
 ![Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png "CC BY-NC-SA 4.0")
 
-#TODO
+##TODO
 
 Implement autodiscovery by Beacon and arp tables
