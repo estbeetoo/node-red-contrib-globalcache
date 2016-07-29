@@ -1,22 +1,42 @@
 node-red-contrib-globalcache
 ==========================
-# Description
+## Description
 Global Cache (iTach & iTach flex) nodes for node-red.
 
 iTach protocol documentation: http://www.globalcache.com/files/docs/API-iTach.pdf
 
-# What's inside?
-It will include three nodes:
+## Install via NPM
 
-'globalcache-controller' : a unique CONFIG node that holds connection configuration for GlobalCache and will acts as the encapsulator for GlobalCache access. As a node-red 'config' node, it cannot be added to a graph, but it acts as a singleton object that gets created in the the background when you add an 'gc' or 'gc-device' node and configure it accordingly.
+From inside your node-red directory:
+```
+npm install node-red-contrib-globalcache
+```
 
--- 'globalcache-out' : GlobalCache output node that can send GlobalCache, so it can be used with function blocks.
+## What's inside?
+It includes three nodes:
 
--- 'globalcache-in': GlobalCache listener node, who emits flow messages based on activity on the GlobalCache bus. Not working in v0.2.0.
+1. ```globalcache-controller``` : a unique CONFIG node that holds connection configuration for GlobalCache and will acts as the encapsulator for GlobalCache access. As a node-red 'config' node, it cannot be added to a graph, but it acts as a singleton object that gets created in the the background when you add an 'gc' or 'gc-device' node and configure it accordingly.
 
--- payload contains:
+2. ```globalcache-out``` : GlobalCache output node that can send GlobalCache, so it can be used with function blocks.
 
---- string data - REQUIRED
+3. ```globalcache-in```: GlobalCache listener node, who emits flow messages based on activity on the GlobalCache bus. Not working in v0.2.0.
+
+Message contains fields:
+
+- ```payload``` - (**REQUIRED**) must be JavaScript object or a string, an example:
+```
+{  
+   "serial":"setstate,1:1,1"
+}
+```
+or
+```
+setstate,1:1,1
+```
+If one specify three parameters: ```unit_number```, ```output``` and ```command```, than all incoming string commands will be transformed into GlobalCache packet: ```[command],[unit_number]:[output],[command]```
+
+- ```format``` - must be equal ```ccf``` or ```hex```for IR Commands 
+- ```justnow``` - should contain ```true``` for commands that shoulds be executed just now (without Queue of commands)
 
 **Right now it not tested in all directions, working with IP2CC and WF2IR.**
  
