@@ -5,7 +5,7 @@
 var util = require('util'),
     helper = require('./lib/helper'),
     iTach = require('globalcache').iTach,
-    DEBUG = false;
+    DEBUG = true;
 
 module.exports = function (RED) {
 
@@ -83,6 +83,7 @@ module.exports = function (RED) {
             //node.log('gcout.onInput msg[' + util.inspect(msg) + ']');
             if (!(msg && msg.hasOwnProperty('payload'))) return;
             var payload = msg.payload;
+            var justnow = msg.justnow;
             if (typeof(msg.payload) === "object") {
                 payload = msg.payload;
             } else if (typeof(msg.payload) === "string") {
@@ -108,7 +109,7 @@ module.exports = function (RED) {
             }
 
 
-            node.send(payload, function (err) {
+            node.send(payload, justnow, function (err) {
                 if (err) {
                     node.error('send error: ' + err);
                 }
@@ -135,7 +136,7 @@ module.exports = function (RED) {
             node.status({fill: "green", shape: "ring", text: "connecting"});
         }
 
-        this.send = function (data, callback) {
+        this.send = function (data, justnow, callback) {
             DEBUG && RED.comms.publish("debug", {name: node.name, msg: 'send data[' + data + ']'});
             //node.log('send data[' + data + ']');
             // init a new one-off connection from the effectively singleton GCController
@@ -154,7 +155,7 @@ module.exports = function (RED) {
 
                 try {
                     DEBUG && RED.comms.publish("debug", {name: node.name, msg: "send:  " + JSON.stringify(data)});
-                    connection.send(data, function (err) {
+                    connection.send(data, justnow, function (err) {
                         callback && callback(err);
                     });
                 }
